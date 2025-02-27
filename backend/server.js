@@ -12,7 +12,25 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173" })); // Restrict CORS to frontend origin
+const allowedOrigins = [
+  "http://localhost:5173", // Local development (frontend)
+  "http://localhost:5000", // Local development (backend, if needed)
+  "https://your-deployed-frontend-url.com", // Deployed frontend
+];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true); // Allow the request
+      } else {
+        callback(new Error("Not allowed by CORS")); // Block the request
+      }
+    },
+    methods: ["GET", "POST"], // Allowed HTTP methods
+    credentials: true, // Allow cookies and credentials
+  })
+);
 app.use(express.json());
 
 // Serve static files from the "dist" folder
@@ -32,7 +50,7 @@ const server = http.createServer(app);
 // Socket.IO setup
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173", // Restrict Socket.IO connections to frontend origin
+    origin: allowedOrigins, // Allow Socket.IO connections from frontend origins
     methods: ["GET", "POST"],
   },
 });
@@ -64,7 +82,7 @@ io.on("connection", (socket) => {
 setInterval(cleanupExpiredRooms, 60 * 60 * 1000);
 
 // Start the server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
