@@ -1,5 +1,6 @@
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
-export const codeSnippets = new Map(); // Export codeSnippets
+ const codeSnippets = new Map(); 
+ export default codeSnippets;
 
 export const fetchcode = (req, res) => {
     try {
