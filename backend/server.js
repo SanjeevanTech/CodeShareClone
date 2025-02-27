@@ -15,7 +15,7 @@ const app = express();
 const allowedOrigins = [
   "http://localhost:5173", // Local development (frontend)
   "http://localhost:5000", // Local development (backend, if needed)
-  "https://your-deployed-frontend-url.com", // Deployed frontend
+  "https://code-share-clone.vercel.app", // Deployed frontend
 ];
 
 app.use(
