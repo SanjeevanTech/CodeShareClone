@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const socket = io('http://localhost:5000');
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
+const socket = io('backendUrl');
 
 const Home = () => {
     const [code, setCode] = useState('');
@@ -15,7 +17,7 @@ const Home = () => {
         const path = window.location.pathname.split('/')[1];
         if (path) {
             setRoom(path);
-            fetch(`http://localhost:5000/code/${path}`)
+            fetch(`${backendUrl}/code/${path}`)
                 .then((response) => response.json())
                 .then((data) => {
                     setCode(data.code);
@@ -39,7 +41,7 @@ const Home = () => {
 
     const handleShare = async () => {
         try {
-            const response = await fetch('http://localhost:5000/share', {
+            const response = await fetch(`${backendUrl}/share`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ code, room })
