@@ -11,9 +11,9 @@ CodeShare is a real-time code-sharing platform that allows users to share and co
 
 ## Screenshot
 
-![Screenshot of CodeShare](./assets/main.png)
-![Screenshot of CodeShare](./assets/sharecode.png)
-![Screenshot of CodeShare](./assets/popup.png)
+![Screenshot of  Home CodeShare](./assets/mainhome.png)
+![Screenshot of  popup CodeShare](./assets/popupcodeshare.png)
+![Screenshot of CodeShare multi screen](./assets/sharemulti.png)
 
 ## Tech Stack
 
