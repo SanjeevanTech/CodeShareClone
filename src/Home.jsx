@@ -5,7 +5,7 @@ import ThemeToggle from "./components/ThemeToggle";
 import ShareModal from "./components/ShareModal";
 import themeClasses from "./utils/themeClasses";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
 
 const Home = () => {
     const [code, setCode] = useState("");
