@@ -9,7 +9,8 @@ const CodeshareHome = () => {
   const handleShare = async () => {
     try {
       console.log("Sharing code:", code);
-      const response = await fetch("http://localhost:5000/share", {
+      const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+      const response = await fetch(`${backendUrl}/share`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

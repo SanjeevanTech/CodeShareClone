@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
 
 const socket = io(backendUrl);
 
