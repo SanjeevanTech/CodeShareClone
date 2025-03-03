@@ -1,5 +1,3 @@
-
-
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
  const codeSnippets = new Map(); 
  export default codeSnippets;
