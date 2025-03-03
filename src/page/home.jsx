@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+console.log(`versel backend url : ${backendUrl}`);
+console.log(`versel backend url`);
+
 
 const socket = io(backendUrl);
 
