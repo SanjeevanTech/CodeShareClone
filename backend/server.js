@@ -28,7 +28,8 @@ app.use(
       }
     },
     methods: ["GET", "POST"], // Allowed HTTP methods
-    credentials: true, // Allow cookies and credentials
+    credentials: true,
+    transports: ["websocket", "polling"], // Allow cookies and credentials
   })
 );
 app.use(express.json());
