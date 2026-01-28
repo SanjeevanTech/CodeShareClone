@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-console.log(`versel backend url : ${backendUrl}`);
+const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+console.log(`vercel backend url : ${backendUrl}`);
 console.log(`versel backend url`);
 
 
@@ -42,20 +42,9 @@ const Home = () => {
         if (room) socket.emit('codeUpdate', { room, code: newCode });
     };
 
-    const handleShare = async () => {
-        try {
-            const response = await fetch(`${backendUrl}/share`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ code, room })
-            });
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            const data = await response.json();
-            setShareUrl(`${window.location.origin}/${room}`);
-            setIsModalOpen(true);
-        } catch (error) {
-            console.error('Error sharing code:', error);
-        }
+    const handleShare = () => {
+        setShareUrl(`${window.location.origin}/${room}`);
+        setIsModalOpen(true);
     };
 
     const handleCopy = () => {
@@ -167,11 +156,11 @@ const Home = () => {
 
             {/* Modal */}
             {isModalOpen && (
-                <div 
+                <div
                     className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
                     onClick={() => setIsModalOpen(false)}
                 >
-                    <div 
+                    <div
                         className={`${currentTheme.modalBg} ${currentTheme.modalText} p-6 rounded-xl shadow-2xl 
                         w-full max-w-md border ${currentTheme.modalBorder} transform scale-100 transition-all duration-300`}
                         onClick={(e) => e.stopPropagation()}

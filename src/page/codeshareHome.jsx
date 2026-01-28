@@ -1,16 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const CodeshareHome = () => {
   const navigate = useNavigate();
   const [code, setCode] = useState("");
-  const [shareUrl, setShareUrl] = useState("");
 
   const handleShare = async () => {
     try {
       console.log("Sharing code:", code);
-      const backendUrl = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
-      console.log(`versel backend url : ${backendUrl}`);
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+      console.log(`vercel backend url : ${backendUrl}`);
       const response = await fetch(`${backendUrl}/share`, {
         method: "POST",
         headers: {
@@ -24,7 +23,7 @@ const CodeshareHome = () => {
       }
 
       const data = await response.json();
-      setShareUrl(data.url); // Assuming the backend returns a URL
+      // setShareUrl(data.url); // Assuming the backend returns a URL
 
       // Extract only the path from the full URL (e.g., /guqxya)
       const path = new URL(data.url).pathname;
@@ -45,13 +44,13 @@ const CodeshareHome = () => {
         <div className="text-gray-300 text-center mb-8">
           <p className="mb-4">
             CodeShare is a real-time code-sharing platform that allows you to
-            collaborate with others seamlessly. Whether you're working on a team
+            collaborate with others seamlessly. Whether you&apos;re working on a team
             project, teaching a coding class, or debugging with a friend,
             CodeShare makes it easy to share and edit code in real-time.
           </p>
           <p className="mb-4">
-            Simply paste your code into the text area below, click "Share Code
-            Now," and share the generated URL with your collaborators. Everyone
+            Simply paste your code into the text area below, click &quot;Share Code
+            Now,&quot; and share the generated URL with your collaborators. Everyone
             with the link can view and edit the code in real-time.
           </p>
           <p>
@@ -60,7 +59,15 @@ const CodeshareHome = () => {
           </p>
         </div>
 
-     
+
+
+        {/* Code Input Area */}
+        <textarea
+          className="w-full h-40 p-4 mb-4 bg-gray-700 text-white rounded-lg border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+          placeholder="Paste or type your code here..."
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+        />
 
         {/* Share Button */}
         <button
@@ -70,7 +77,7 @@ const CodeshareHome = () => {
           Share Code Now
         </button>
 
-        
+
       </div>
     </div>
   );

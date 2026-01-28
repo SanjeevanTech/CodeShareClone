@@ -1,6 +1,6 @@
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
- const codeSnippets = new Map(); 
- export default codeSnippets;
+const codeSnippets = new Map();
+export default codeSnippets;
 
 export const fetchcode = (req, res) => {
     try {
@@ -26,10 +26,11 @@ export const fetchcode = (req, res) => {
 
 export const share = (req, res) => {
     try {
+        const { code } = req.body; // Get code from request body
         const room = Math.random().toString(36).substring(7);
         const expiryTime = Date.now() + 24 * 60 * 60 * 1000; // 24-hour expiration
 
-        codeSnippets.set(room, { code: "", expiryTime });
+        codeSnippets.set(room, { code: code || "", expiryTime });
 
         res.json({ url: `${BASE_URL}/${room}` });
     } catch (error) {
