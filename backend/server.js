@@ -9,13 +9,12 @@ import shareCode from "./routes/shareCodes.routes.js";
 import codeSnippets, { cleanupExpiredRooms } from "./controller/shareCodes.controller.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const frntendurl = process.env.FRONTEND_URL || "http://localhost:5173";
 const app = express();
 
 // Middleware
 const allowedOrigins = [
-  "http://localhost:5173", // Local development (frontend)
-  "http://localhost:5000", // Local development (backend, if needed)
-  "https://code-share-clone.vercel.app", // Deployed frontend
+  frntendurl,
 ];
 
 app.use(

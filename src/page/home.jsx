@@ -1,13 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 console.log(`vercel backend url : ${backendUrl}`);
-console.log(`versel backend url`);
-
-
-const socket = io(backendUrl);
 
 const Home = () => {
     const [code, setCode] = useState('');
@@ -15,8 +11,12 @@ const Home = () => {
     const [room, setRoom] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [theme, setTheme] = useState('dark'); // Default to dark theme
+    const socketRef = useRef(null);
 
     useEffect(() => {
+        // Initialize socket connection
+        socketRef.current = io(backendUrl);
+
         const path = window.location.pathname.split('/')[1];
         if (path) {
             setRoom(path);
@@ -24,22 +24,34 @@ const Home = () => {
                 .then((response) => response.json())
                 .then((data) => {
                     setCode(data.code);
-                    socket.emit('joinRoom', path);
+                    if (socketRef.current) {
+                        socketRef.current.emit('joinRoom', path);
+                    }
                 })
                 .catch((error) => console.error('Error fetching code:', error));
         }
-    }, []);
 
-    useEffect(() => {
-        const handleCodeUpdate = (newCode) => setCode(newCode);
-        socket.on('codeUpdate', handleCodeUpdate);
-        return () => socket.off("codeUpdate", handleCodeUpdate);
-    }, [room]);
+        // Setup socket event listener
+        if (socketRef.current) {
+            socketRef.current.on('codeUpdate', (newCode) => {
+                setCode(newCode);
+            });
+        }
+
+        // Cleanup on unmount
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
+    }, []);
 
     const handleInputChange = (e) => {
         const newCode = e.target.value;
         setCode(newCode);
-        if (room) socket.emit('codeUpdate', { room, code: newCode });
+        if (room && socketRef.current) {
+            socketRef.current.emit('codeUpdate', { room, code: newCode });
+        }
     };
 
     const handleShare = () => {
